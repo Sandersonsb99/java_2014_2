@@ -18,6 +18,58 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 	protected void validaDados() throws ManagerException {
 
 		// TODO: COMPLETAR
+		if (codigoBanco == null || codigoBanco.length() != 3) {
+			throw new ManagerException(
+					"Código do Banco não informado ou com tamanho diferente de 3 posições");
+		}
+
+		if (codigoMoeda == null || codigoMoeda.length() != 1) {
+			throw new ManagerException(
+					"Código de moeda não informado ou inválido");
+		}
+
+		if (dataVencimento == null) {
+			throw new ManagerException("Data de vencimento não informada");
+		}
+
+		if (valor == null) {
+			throw new ManagerException(
+					"Valor do bloqueto bancÃ¡rio não informado");
+		}
+
+		if (numeroConvenioBanco == null || numeroConvenioBanco.length() != 8) {
+			throw new ManagerException(
+					"número de convênio não informado ou o convênio informado é inválido. O convênio deve ter 4 posições");
+		}
+
+		if (complementoNumeroConvenioBancoSemDV == null
+				&& complementoNumeroConvenioBancoSemDV.length() != 9) {
+			throw new ManagerException(
+					"Complemento do número do convênio não informado. O complemento deve ter 7 posições");
+		}
+
+		/*if (numeroAgenciaRelacionamento == null
+				|| numeroAgenciaRelacionamento.length() != 4) {
+			throw new ManagerException(
+					"número da agência de Relacionamento não informado. O número da agência deve ter 4 posições");
+		}
+
+		if (contaCorrenteRelacionamentoSemDV == null
+				|| contaCorrenteRelacionamentoSemDV.length() != 8) {
+			throw new ManagerException(
+					"Conta corrente de relacionamento não informada. O número da conta deve ter 8 posições");
+		}*/
+
+		if (tipoCarteira == null || tipoCarteira.length() != 2) {
+			throw new ManagerException(
+					"Tipo carteira não informado ou o valor é inválido");
+		}
+
+		if (dataBase == null) {
+			throw new ManagerException("A database não foi informada.");
+		}
+
+
 
 	}
 
@@ -30,6 +82,15 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 			throws ManagerException {
 
 		// TODO: COMPLETAR
+		
+		this.codigoBanco = codigoBanco;
+		this.codigoMoeda = codigoMoeda;
+		this.dataVencimento = dataVencimento;
+		this.valor = valor;
+		this.numeroConvenioBanco = numeroConvenioBanco;
+		this.complementoNumeroConvenioBancoSemDV = complementoNumeroConvenioBancoSemDV;
+		this.tipoCarteira = tipoCarteira;
+		this.dataBase = dataBase;
 
 		validaDados();
 
@@ -43,6 +104,16 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 		init();
 
 		StringBuilder buffer = new StringBuilder();
+		
+		buffer.append(codigoBanco);
+		buffer.append(codigoMoeda);
+		buffer.append(dataVencimento);
+		buffer.append(getValorFormatado());
+		buffer.append(000000);
+		buffer.append(numeroConvenioBanco);
+		buffer.append(complementoNumeroConvenioBancoSemDV);
+		buffer.append(tipoCarteira);
+		buffer.append(dataBase);
 
 		// TODO: COMPLETAR
 
@@ -55,6 +126,16 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 		init();
 
 		StringBuilder buffer = new StringBuilder();
+		
+		buffer.append(codigoBanco);
+		buffer.append(codigoMoeda);
+		buffer.append(digitoVerificadorCodigoBarras(getCodigoBarrasSemDigito()));
+		buffer.append(dataVencimento);
+		buffer.append(getValorFormatado());
+		buffer.append(000000);
+		buffer.append(numeroConvenioBanco);
+		buffer.append(complementoNumeroConvenioBancoSemDV);
+		buffer.append(tipoCarteira);
 
 		// TODO: COMPLETAR
 

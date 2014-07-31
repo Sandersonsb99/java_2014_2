@@ -52,6 +52,14 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 	 * @return
 	 */
 	protected String getValorFormatado() {
+		
+		/**
+		 *O método retorna o valor informado de decimal para um formato racional, sendo
+		 *que seu tamanho é no máximo de 10 posições, isto é, 2 casas para a parte decimal
+		 *e 8 casas para o a parte inteira, caso não completa as 8 casas, vai colocando
+		 *zero até completar. Isso tudo em String. 
+		 * 
+		 */
 
 		// TODO: Explicar o que este método está fazendo
 		return String.format(
@@ -175,6 +183,12 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 	 * @return
 	 */
 	protected static long diferencaEmDias(Date dataInicial, Date dataFinal) {
+		
+		/*
+		 * O método retorna o cálculo da data base definida menos a data de vencimento,
+		 * o resultado este diferencia será em ms, pois é utilizado o método "getTime",
+		 * isso dividido por um dia, que em ms é 86400000 do tipo double.
+		 */
 
 		// TODO: Estude a Math e escreva aqui o que este método está fazendo
 
