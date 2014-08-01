@@ -16,7 +16,7 @@ public class BloquetoBBConvenio6 extends BloquetoBBImpl implements BloquetoBB {
 	@Override
 	protected void validaDados() throws ManagerException {
 
-		//TODO: FAZER VALIDAÇÕES
+		// TODO: FAZER VALIDAÇÕES FEITO
 		if (codigoBanco == null || codigoBanco.length() != 3) {
 			throw new ManagerException(
 					"Código do Banco não informado ou com tamanho diferente de 3 posições");
@@ -64,11 +64,25 @@ public class BloquetoBBConvenio6 extends BloquetoBBImpl implements BloquetoBB {
 					"Tipo carteira não informado ou o valor é inválido");
 		}
 
+		if ("21".equals(tipoCarteira)
+				&& (complementoNumeroConvenioBancoSemDV.length()) != 17) {
+			throw new ManagerException(
+					"número do Convênio do Banco + "
+					+ "Complemento do número do Convênio deve ter 17 posições"
+					+ "para o tipo Convênio igual 21");
+		}
+		
+		if ("21".equals(tipoCarteira)
+				&& (complementoNumeroConvenioBancoSemDV.length() + numeroConvenioBanco.length()) != 11) {
+			throw new ManagerException(
+					"número do Convênio do Banco + "
+					+ "Complemento do número do Convênio deve ter 11 posições"
+					+ "para o tipo Convênio igual diferente de 21");
+		}
+
 		if (dataBase == null) {
 			throw new ManagerException("A database não foi informada.");
 		}
-
-
 
 	}
 
@@ -97,8 +111,9 @@ public class BloquetoBBConvenio6 extends BloquetoBBImpl implements BloquetoBB {
 
 	@Override
 	protected String getLDNumeroConvenio() {
-
-		return "";
+		
+		String convenio = String.format("%06d", Long.valueOf(numeroConvenioBanco));
+		return String.format("%s.%s", convenio.substring(0,1), convenio.substring(1,5));
 
 	}
 
@@ -111,19 +126,21 @@ public class BloquetoBBConvenio6 extends BloquetoBBImpl implements BloquetoBB {
 		init();
 
 		StringBuilder buffer = new StringBuilder();
-		
+
 		buffer.append(codigoBanco);
 		buffer.append(codigoMoeda);
-		buffer.append(dataVencimento);
+		buffer.append(fatorVencimento);
 		buffer.append(getValorFormatado());
 		buffer.append(numeroConvenioBanco);
 		buffer.append(complementoNumeroConvenioBancoSemDV);
-		buffer.append(numeroAgenciaRelacionamento);
-		buffer.append(contaCorrenteRelacionamentoSemDV);
-		buffer.append(tipoCarteira);
-		buffer.append(dataBase);
 		
-		//TODO: COMPLETAR
+		if(!"21".equals(tipoCarteira)){
+			buffer.append(numeroAgenciaRelacionamento);
+			buffer.append(contaCorrenteRelacionamentoSemDV);
+		}		
+		buffer.append(tipoCarteira);
+
+		// TODO: COMPLETAR FEITO
 
 		return buffer.toString();
 	}
@@ -134,19 +151,22 @@ public class BloquetoBBConvenio6 extends BloquetoBBImpl implements BloquetoBB {
 		init();
 
 		StringBuilder buffer = new StringBuilder();
-		
+
 		buffer.append(codigoBanco);
 		buffer.append(codigoMoeda);
 		buffer.append(digitoVerificadorCodigoBarras(getCodigoBarrasSemDigito()));
-		buffer.append(dataVencimento);
+		buffer.append(fatorVencimento);
 		buffer.append(getValorFormatado());
 		buffer.append(numeroConvenioBanco);
 		buffer.append(complementoNumeroConvenioBancoSemDV);
-		buffer.append(numeroAgenciaRelacionamento);
-		buffer.append(contaCorrenteRelacionamentoSemDV);
+		
+		if(! "21".equals(tipoCarteira)){
+			buffer.append(numeroAgenciaRelacionamento);
+			buffer.append(contaCorrenteRelacionamentoSemDV);
+		}		
 		buffer.append(tipoCarteira);
 
-		//TODO: COMPLETAR
+		// TODO: COMPLETAR FEITO
 
 		return buffer.toString();
 	}

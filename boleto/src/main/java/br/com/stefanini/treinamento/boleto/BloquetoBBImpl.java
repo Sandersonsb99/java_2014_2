@@ -30,7 +30,8 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 	protected void setFatorVencimento() {
 
 		long dias = diferencaEmDias(dataBase, dataVencimento);
-
+		
+		
 		// TODO: EXPLICAR O QUE ESTE MÉTODO ESTÁ FAZENDO
 
 		fatorVencimento = String.format("%04d", dias);
@@ -52,16 +53,17 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 	 * @return
 	 */
 	protected String getValorFormatado() {
-		
+
 		/**
-		 *O método retorna o valor informado de decimal para um formato racional, sendo
-		 *que seu tamanho é no máximo de 10 posições, isto é, 2 casas para a parte decimal
-		 *e 8 casas para o a parte inteira, caso não completa as 8 casas, vai colocando
-		 *zero até completar. Isso tudo em String. 
+		 * O método retorna o valor informado de decimal para um formato
+		 * racional, sendo que seu tamanho é no máximo de 10 posições, isto é, 2
+		 * casas para a parte decimal e 8 casas para o a parte inteira, caso não
+		 * completa as 8 casas, vai colocando zero até completar. Isso tudo em
+		 * String.
 		 * 
 		 */
 
-		// TODO: Explicar o que este método está fazendo
+		// TODO: Explicar o que este método está fazendo FEITO
 		return String.format(
 				"%010d",
 				Long.valueOf(valor.setScale(2, RoundingMode.HALF_UP).toString()
@@ -90,8 +92,12 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 	 * @return
 	 */
 	private String ldCampo5() {
-		// TODO: COMPLETAR
-		return "";
+
+		StringBuilder buffer = new StringBuilder();
+		buffer.append(fatorVencimento);
+		buffer.append(getValorFormatado());
+		// TODO: COMPLETAR FEITO
+		return buffer.toString();
 	}
 
 	/**
@@ -100,8 +106,9 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 	 * @return
 	 */
 	private String ldCampo4() {
-		// TODO: COMPLETAR
-		return "";
+		// TODO: COMPLETAR FEITO
+		return String
+				.valueOf(digitoVerificadorCodigoBarras(getCodigoBarrasSemDigito()));
 	}
 
 	/**
@@ -111,8 +118,9 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 	 */
 	private String ldCampo3() {
 
-		// TODO: COMPLETAR
-		return "";
+		// TODO: COMPLETAR FEITO
+		return String.format("%s.%s", getCodigoBarras().substring(34, 39),
+				getCodigoBarras().substring(39, 44));
 	}
 
 	/**
@@ -121,9 +129,10 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 	 * @return
 	 */
 	private String ldCampo2() {
-		// TODO: COMPLETAR
 
-		return "";
+		// TODO: COMPLETAR FEITO
+		return String.format("%s.%s", getCodigoBarras().substring(24, 29),
+				getCodigoBarras().substring(29, 34));
 	}
 
 	/**
@@ -134,8 +143,34 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 	 */
 	protected int digitoVerificadorPorCampo(String campo, boolean valor) {
 		// TODO: COMPLETAR
+		
+		StringBuffer s = new StringBuffer(campo);
+		String reverso = s.reverse().toString();
+		int total = 0;
+		
+		for(int i=0; i<=s.length(); i++){
+			int resultado = 0;
+			if(i%2 == 0){
+				 resultado = reverso.toCharArray()[i]*2;
+				
+				if(resultado > 9){
+					char[] teste = String.valueOf(resultado).toCharArray();
+					for(char c: teste){
+						total += c;
+					}
+				}else total += resultado;
+				
+			}else total += resultado;
+		}
+		
+		int total2 = total;
+		
+		while(total2%10 != 0){
+			total2 += 1;
+		}
+		
 
-		return 0;
+		return total2-total;
 	}
 
 	/**
@@ -157,8 +192,14 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 	 * @return
 	 */
 	private String ldCampo1() {
+
 		StringBuilder buffer = new StringBuilder();
-		// TODO: COMPLETAR
+
+		buffer.append(codigoBanco);
+		buffer.append(codigoMoeda);
+		buffer.append(getLDNumeroConvenio());
+
+		// TODO: COMPLETAR FEITO
 		return buffer.toString();
 
 	}
@@ -168,7 +209,20 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 		init();
 
 		StringBuilder buffer = new StringBuilder();
-		// TODO: COMPLETAR
+		buffer.append(ldCampo1());
+		buffer.append(digitoVerificadorPorCampo(ldCampo1(),true));
+		buffer.append(" ");
+		buffer.append(ldCampo2());
+		buffer.append(digitoVerificadorPorCampo(ldCampo2(),true));
+		buffer.append(" ");
+		buffer.append(ldCampo3());
+		buffer.append(digitoVerificadorPorCampo(ldCampo3(),true));
+		buffer.append(" ");
+		buffer.append(ldCampo4());
+		buffer.append(" ");
+		buffer.append(ldCampo5());
+
+		// TODO: COMPLETAR FEITO
 
 		return buffer.toString();
 	}
@@ -183,11 +237,12 @@ public abstract class BloquetoBBImpl implements BloquetoBB {
 	 * @return
 	 */
 	protected static long diferencaEmDias(Date dataInicial, Date dataFinal) {
-		
+
 		/*
-		 * O método retorna o cálculo da data base definida menos a data de vencimento,
-		 * o resultado este diferencia será em ms, pois é utilizado o método "getTime",
-		 * isso dividido por um dia, que em ms é 86400000 do tipo double.
+		 * O método retorna o cálculo da data base definida menos a data de
+		 * vencimento, o resultado este diferencia será em ms, pois é utilizado
+		 * o método "getTime", isso dividido por um dia, que em ms é 86400000 do
+		 * tipo double.
 		 */
 
 		// TODO: Estude a Math e escreva aqui o que este método está fazendo
