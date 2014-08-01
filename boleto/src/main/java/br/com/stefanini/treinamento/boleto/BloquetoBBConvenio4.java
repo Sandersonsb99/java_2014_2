@@ -77,7 +77,7 @@ public class BloquetoBBConvenio4 extends BloquetoBBImpl implements BloquetoBB {
 			String contaCorrenteRelacionamentoSemDV, String tipoCarteira)
 			throws ManagerException {
 
-		//TODO: INICIALIZAR DADOS
+		//TODO: INICIALIZAR DADOS FEITO
 		this.codigoBanco = codigoBanco;
 		this.codigoMoeda = codigoMoeda;
 		this.dataVencimento = dataVencimento;
@@ -96,7 +96,8 @@ public class BloquetoBBConvenio4 extends BloquetoBBImpl implements BloquetoBB {
 	@Override
 	protected String getLDNumeroConvenio() {
 
-		return "";
+		String convenio = String.format("%04d", Long.valueOf(numeroConvenioBanco));
+		return String.format("%s.%s", convenio.substring(0,1), convenio.substring(1,5));
 
 	}
 
@@ -111,17 +112,15 @@ public class BloquetoBBConvenio4 extends BloquetoBBImpl implements BloquetoBB {
 		StringBuilder buffer = new StringBuilder();
 		buffer.append(codigoBanco);
 		buffer.append(codigoMoeda);
-		buffer.append(dataVencimento);
+		buffer.append(fatorVencimento);
 		buffer.append(getValorFormatado());
 		buffer.append(numeroConvenioBanco);
 		buffer.append(complementoNumeroConvenioBancoSemDV);
 		buffer.append(numeroAgenciaRelacionamento);
 		buffer.append(contaCorrenteRelacionamentoSemDV);
-		buffer.append(tipoCarteira);
-		buffer.append(dataBase);
-		
+		buffer.append(tipoCarteira);		
 	    
-		//TODO: COMPLETAR
+		//TODO: COMPLETAR FEITO
 		
 		
 		
@@ -138,16 +137,15 @@ public class BloquetoBBConvenio4 extends BloquetoBBImpl implements BloquetoBB {
 		buffer.append(codigoBanco);
 		buffer.append(codigoMoeda);
 		buffer.append(digitoVerificadorCodigoBarras(getCodigoBarrasSemDigito()));
-		buffer.append(dataVencimento);
+		buffer.append(fatorVencimento);
 		buffer.append(getValorFormatado());
 		buffer.append(numeroConvenioBanco);
 		buffer.append(complementoNumeroConvenioBancoSemDV);
 		buffer.append(numeroAgenciaRelacionamento);
 		buffer.append(contaCorrenteRelacionamentoSemDV);
-		buffer.append(tipoCarteira);
+		buffer.append(tipoCarteira);		
 		
-		
-		//TODO: COMPLETAR
+		//TODO: COMPLETAR FEITO
 		
 
 		return buffer.toString();

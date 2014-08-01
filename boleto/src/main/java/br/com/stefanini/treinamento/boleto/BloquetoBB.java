@@ -15,6 +15,8 @@ public interface BloquetoBB {
 	 * @return Linha digitável
 	 */
 	public String getLinhaDigitavel();
+	
+	
 
 	/**
 	 * Retorna o digito verificador do código de barras

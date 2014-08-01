@@ -17,7 +17,7 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 	@Override
 	protected void validaDados() throws ManagerException {
 
-		// TODO: COMPLETAR
+		// TODO: COMPLETAR FEITO
 		if (codigoBanco == null || codigoBanco.length() != 3) {
 			throw new ManagerException(
 					"Código do Banco não informado ou com tamanho diferente de 3 posições");
@@ -37,28 +37,16 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 					"Valor do bloqueto bancÃ¡rio não informado");
 		}
 
-		if (numeroConvenioBanco == null || numeroConvenioBanco.length() != 8) {
+		if (numeroConvenioBanco == null || numeroConvenioBanco.length() != 7) {
 			throw new ManagerException(
 					"número de convênio não informado ou o convênio informado é inválido. O convênio deve ter 4 posições");
 		}
 
 		if (complementoNumeroConvenioBancoSemDV == null
-				&& complementoNumeroConvenioBancoSemDV.length() != 9) {
+				&& complementoNumeroConvenioBancoSemDV.length() != 10) {
 			throw new ManagerException(
 					"Complemento do número do convênio não informado. O complemento deve ter 7 posições");
 		}
-
-		/*if (numeroAgenciaRelacionamento == null
-				|| numeroAgenciaRelacionamento.length() != 4) {
-			throw new ManagerException(
-					"número da agência de Relacionamento não informado. O número da agência deve ter 4 posições");
-		}
-
-		if (contaCorrenteRelacionamentoSemDV == null
-				|| contaCorrenteRelacionamentoSemDV.length() != 8) {
-			throw new ManagerException(
-					"Conta corrente de relacionamento não informada. O número da conta deve ter 8 posições");
-		}*/
 
 		if (tipoCarteira == null || tipoCarteira.length() != 2) {
 			throw new ManagerException(
@@ -68,8 +56,6 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 		if (dataBase == null) {
 			throw new ManagerException("A database não foi informada.");
 		}
-
-
 
 	}
 
@@ -81,13 +67,14 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 			String contaCorrenteRelacionamentoSemDV, String tipoCarteira)
 			throws ManagerException {
 
-		// TODO: COMPLETAR
-		
+		// TODO: COMPLETAR FEITO
+
 		this.codigoBanco = codigoBanco;
 		this.codigoMoeda = codigoMoeda;
 		this.dataVencimento = dataVencimento;
 		this.valor = valor;
 		this.numeroConvenioBanco = numeroConvenioBanco;
+		this.contaCorrenteRelacionamentoSemDV = contaCorrenteRelacionamentoSemDV;
 		this.complementoNumeroConvenioBancoSemDV = complementoNumeroConvenioBancoSemDV;
 		this.tipoCarteira = tipoCarteira;
 		this.dataBase = dataBase;
@@ -104,18 +91,18 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 		init();
 
 		StringBuilder buffer = new StringBuilder();
-		
+
 		buffer.append(codigoBanco);
 		buffer.append(codigoMoeda);
-		buffer.append(dataVencimento);
+		buffer.append(fatorVencimento);
 		buffer.append(getValorFormatado());
-		buffer.append(000000);
+		buffer.append("000000");
+		// buffer.append(String.format("%06d", 0));
 		buffer.append(numeroConvenioBanco);
 		buffer.append(complementoNumeroConvenioBancoSemDV);
 		buffer.append(tipoCarteira);
-		buffer.append(dataBase);
 
-		// TODO: COMPLETAR
+		// TODO: COMPLETAR FEITO
 
 		return buffer.toString();
 	}
@@ -126,7 +113,7 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 		init();
 
 		StringBuilder buffer = new StringBuilder();
-		
+
 		buffer.append(codigoBanco);
 		buffer.append(codigoMoeda);
 		buffer.append(digitoVerificadorCodigoBarras(getCodigoBarrasSemDigito()));
@@ -137,7 +124,7 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 		buffer.append(complementoNumeroConvenioBancoSemDV);
 		buffer.append(tipoCarteira);
 
-		// TODO: COMPLETAR
+		// TODO: COMPLETAR FEITO
 
 		return buffer.toString();
 	}
@@ -145,7 +132,10 @@ public class BloquetoBBConvenioAcima1000000 extends BloquetoBBImpl implements
 	@Override
 	protected String getLDNumeroConvenio() {
 
-		return ""; // TODO: COMPLETAR;
+		String convenio = String.format("%07d",
+				Long.valueOf(numeroConvenioBanco));
+		return String.format("%s.%s", convenio.substring(0, 1),
+				convenio.substring(1, 5));
 
 	}
 
